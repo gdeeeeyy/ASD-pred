@@ -6,6 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 import time
 from knn import KNN
 from logreg import LogisticRegression
+from nb import NaiveBayes
 
 csv=pd.read_csv(r"asd.csv")
 data=pd.DataFrame(csv)
@@ -51,18 +52,18 @@ for column in X_train.columns:
         X_test[column] = label_encoder.transform(X_test[column])
 
 
-# from knn import KNN
-# clf=KNN(k=3)
-# clf.fit(X_train, y_train)
-# preds=clf.predict(X_test)
+from knn import KNN
+clf=KNN(k=3)
+clf.fit(X_train, y_train)
+preds=clf.predict(X_test)
 
-# acc=np.sum(preds==y_test)/len(y_test)
-# print(acc)
+acc=np.sum(preds==y_test)/len(y_test)
+print(acc)
 
 
 def accuracy(y_true, y_pred):
     acc=np.sum(y_true==y_pred)/len(y_true)
-    return acc
+    return acc*100
 
 i=10000#final val at 1000000000
 while(i<1000000000):
@@ -77,3 +78,14 @@ while(i<1000000000):
     print("\n")
     i*=10
 print("Mass dhaan")
+
+
+stime=time.time()
+nb=NaiveBayes()
+nb.fit(X_train, y_train)
+predictions=nb.predict(X_test)
+
+print(f"Naive Bayes classification accuracy: {accuracy(y_test, predictions)}")
+etime=time.time()
+t=etime-stime
+print(f"Time taken for Naive Bayes algorithm is {t} seconds")
