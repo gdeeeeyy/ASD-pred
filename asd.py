@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+import time
+from knn import KNN
+from logreg import LogisticRegression
 
 csv=pd.read_csv(r"asd.csv")
 data=pd.DataFrame(csv)
@@ -48,22 +51,29 @@ for column in X_train.columns:
         X_test[column] = label_encoder.transform(X_test[column])
 
 
-from knn import KNN
-clf=KNN(k=3)
-clf.fit(X_train, y_train)
-preds=clf.predict(X_test)
+# from knn import KNN
+# clf=KNN(k=3)
+# clf.fit(X_train, y_train)
+# preds=clf.predict(X_test)
 
-acc=np.sum(preds==y_test)/len(y_test)
-print(acc)
+# acc=np.sum(preds==y_test)/len(y_test)
+# print(acc)
 
 
 def accuracy(y_true, y_pred):
     acc=np.sum(y_true==y_pred)/len(y_true)
     return acc
 
-from logreg import LogisticRegression
-reg=LogisticRegression(lr=0.0001, n_iters=1000000000)#run these iterations(didn't run this yet)
-reg.fit(X_train, y_train)
-preds=reg.predict(X_test)
-
-print("Accuracy for 1000000000 iterations = ",accuracy(y_test, preds)*100)
+i=10000#final val at 1000000000
+while(i<1000000000):
+    stime=time.time()
+    reg=LogisticRegression(lr=0.0001, n_iters=i)
+    reg.fit(X_train, y_train)
+    preds=reg.predict(X_test)
+    print(f"Accuracy for {i} iterations = {accuracy(y_test, preds)*100}")
+    etime=time.time()
+    t=etime-stime
+    print(f"Time taken for {i} iterations is {t} seconds")
+    print("\n")
+    i*=10
+print("Mass dhaan")
