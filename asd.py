@@ -7,6 +7,7 @@ import time
 from knn import KNN
 from logreg import LogisticRegression
 from nb import NaiveBayes
+from svm import SVM
 
 csv=pd.read_csv(r"asd.csv")
 data=pd.DataFrame(csv)
@@ -89,3 +90,10 @@ print(f"Naive Bayes classification accuracy: {accuracy(y_test, predictions)}")
 etime=time.time()
 t=etime-stime
 print(f"Time taken for Naive Bayes algorithm is {t} seconds")
+
+clf=SVM(lr=0.001, _lambda=0.01, n_iters=1000)
+clf.fit(X_train, y_train)
+predictions=clf._predict(X_test)
+
+print(f"Accuracy: {accuracy(y_test, predictions)}")
+
