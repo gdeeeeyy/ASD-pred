@@ -57,52 +57,72 @@ y_train1=y_train.values
 X_test1=X_test.values
 y_test1=y_test.values
 
-
-from knn import KNN
-clf=KNN(k=3)
-clf.fit(X_train, y_train)
-preds=clf.predict(X_test)
-
-acc=np.sum(preds==y_test)/len(y_test)
-print(acc)
-
-
 def accuracy(y_true, y_pred):
     acc=np.sum(y_true==y_pred)/len(y_true)
     return acc*100
 
-i=10000#final val at 1000000000
-while(i<1000000000):
-    stime=time.time()
-    reg=LogisticRegression(lr=0.0001, n_iters=i)
-    reg.fit(X_train, y_train)
-    preds=reg.predict(X_test)
-    print(f"Accuracy for {i} iterations = {accuracy(y_test, preds)*100}")
-    etime=time.time()
-    t=etime-stime
-    print(f"Time taken for {i} iterations is {t} seconds")
-    print("\n")
-    i*=10
-print("Mass dhaan")
+s1time=time.time()
+clf=KNN(k=3)
+clf.fit(X_train1, y_train1)
+preds=clf.predict(X_test1)
 
+acc=accuracy(y_test1, preds)
+print(f"Accuracy for KNN is {acc}")
+e1time=time.time()
+t1=e1time-s1time
+print(f"Time taken for KNN is {t1} seconds")
+print("\n")
+
+s2time=time.time()
+clf=SVM(lr=0.001, _lambda=0.01, n_iters=1000)
+clf.fit(X_train1, y_train1)
+predictions=clf._predict(X_test1)
+print(f"SVM accuracy: {accuracy(y_test1, predictions)}")
+e2time=time.time()
+t2=e2time-s2time
+print(f"Time taken for SVM is {t2} seconds")
+print("\n")
+
+
+s3time=time.time()
+clf=RandomForest(n_trees=3)
+clf.fit(X_train1, y_train1)
+y_pred=clf.predict(X_test1)
+print(f"RFC accuracy: {accuracy(y_test, y_pred)}")
+e3time=time.time()
+t3=e3time-s3time
+print(f"Time taken for RFC is {t3} seconds")
+print("\n")
 
 stime=time.time()
 nb=NaiveBayes()
-nb.fit(X_train, y_train)
-predictions=nb.predict(X_test)
-
-print(f"Naive Bayes classification accuracy: {accuracy(y_test, predictions)}")
+nb.fit(X_train1, y_train1)
+predictions=nb.predict(X_test1)
+print(f"Naive Bayes classification accuracy: {accuracy(y_test1, predictions)}")
 etime=time.time()
 t=etime-stime
 print(f"Time taken for Naive Bayes algorithm is {t} seconds")
 
-clf=SVM(lr=0.001, _lambda=0.01, n_iters=1000)
-clf.fit(X_train, y_train)
-predictions=clf._predict(X_test)
+i=1000000000#start value 10000 
+# while(i<1000000000):
+stime=time.time()
+reg=LogisticRegression(lr=0.0001, n_iters=i)
+reg.fit(X_train, y_train)
+preds=reg.predict(X_test)
+print(f"Accuracy for {i} iterations = {accuracy(y_test, preds)}")
+etime=time.time()
+t=etime-stime
+print(f"Time taken for {i} iterations is {t} seconds")
+print("\n")
+# i*=10
 
 
-clf=RandomForest(n_trees=3)
-clf.fit(X_train1, y_train1)
 
-y_pred=clf.predict(X_test1)
-print(f"Accuracy: {accuracy(y_test, y_pred)}")
+
+"""
+Logistic Regression-Works
+KNN-Works
+Naive Bayes-Doesn't
+SVM-Works
+RFC-Works
+"""
