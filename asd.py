@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import time
+from sklearn.metrics import confusion_matrix, precision_recall_curve
 from knn import KNN
 from logreg import LogisticRegression
 from nb import NaiveBayes
@@ -65,12 +66,12 @@ s1time=time.time()
 clf=KNN(k=3)
 clf.fit(X_train1, y_train1)
 preds=clf.predict(X_test1)
-
 acc=accuracy(y_test1, preds)
 print(f"Accuracy for KNN is {acc}")
 e1time=time.time()
 t1=e1time-s1time
 print(f"Time taken for KNN is {t1} seconds")
+print(confusion_matrix(y_test, preds))
 print("\n")
 
 s2time=time.time()
@@ -81,27 +82,31 @@ print(f"SVM accuracy: {accuracy(y_test1, predictions)}")
 e2time=time.time()
 t2=e2time-s2time
 print(f"Time taken for SVM is {t2} seconds")
+print(confusion_matrix(y_test, predictions))
 print("\n")
 
 
 s3time=time.time()
 clf=RandomForest(n_trees=3)
 clf.fit(X_train1, y_train1)
-y_pred=clf.predict(X_test1)
-print(f"RFC accuracy: {accuracy(y_test, y_pred)}")
+y_pred1=clf.predict(X_test1)
+print(f"RFC accuracy: {accuracy(y_test, y_pred1)}")
 e3time=time.time()
 t3=e3time-s3time
 print(f"Time taken for RFC is {t3} seconds")
+print(confusion_matrix(y_test, y_pred1))
 print("\n")
 
 stime=time.time()
 nb=NaiveBayes()
 nb.fit(X_train1, y_train1)
-predictions=nb.predict(X_test1)
-print(f"Naive Bayes classification accuracy: {accuracy(y_test1, predictions)}")
+prediction=nb.predict(X_test1)
+print(f"Naive Bayes classification accuracy: {accuracy(y_test1, prediction)}")
 etime=time.time()
 t=etime-stime
 print(f"Time taken for Naive Bayes algorithm is {t} seconds")
+print(confusion_matrix(y_test, prediction))
+print("\n")
 
 i=1000000000#start value 10000 
 # while(i<1000000000):
@@ -115,7 +120,6 @@ t=etime-stime
 print(f"Time taken for {i} iterations is {t} seconds")
 print("\n")
 # i*=10
-
 
 
 
