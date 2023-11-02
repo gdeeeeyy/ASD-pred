@@ -8,6 +8,7 @@ from knn import KNN
 from logreg import LogisticRegression
 from nb import NaiveBayes
 from svm import SVM
+from random_forest import RandomForest
 
 csv=pd.read_csv(r"asd.csv")
 data=pd.DataFrame(csv)
@@ -41,8 +42,7 @@ df=pd.DataFrame(csvf)
 X=df.drop(['Case_No', 'ASD', 'Who completed the test'], axis=1)
 y=df['ASD']
 
-X_train, X_test, y_train, y_test=train_test_split(X, y, test_size=0.4, random_state=123)
-
+X_train, X_test, y_train, y_test=train_test_split(X, y, test_size=0.2, random_state=123)
 
 from sklearn.preprocessing import LabelEncoder
 label_encoder = LabelEncoder()
@@ -51,6 +51,11 @@ for column in X_train.columns:
     if X_train[column].dtype == 'object':
         X_train[column] = label_encoder.fit_transform(X_train[column])
         X_test[column] = label_encoder.transform(X_test[column])
+
+X_train1=X_train.values
+y_train1=y_train.values
+X_test1=X_test.values
+y_test1=y_test.values
 
 
 from knn import KNN
@@ -95,5 +100,9 @@ clf=SVM(lr=0.001, _lambda=0.01, n_iters=1000)
 clf.fit(X_train, y_train)
 predictions=clf._predict(X_test)
 
-print(f"Accuracy: {accuracy(y_test, predictions)}")
 
+clf=RandomForest(n_trees=3)
+clf.fit(X_train1, y_train1)
+
+y_pred=clf.predict(X_test1)
+print(f"Accuracy: {accuracy(y_test, y_pred)}")
