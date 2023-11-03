@@ -108,16 +108,17 @@ print(f"Time taken for Naive Bayes algorithm is {t} seconds")
 print(confusion_matrix(y_test, prediction))
 print("\n")
 
-i=1000000000#start value 10000 
+i=10000000#start value 10000 
 # while(i<1000000000):
 stime=time.time()
 reg=LogisticRegression(lr=0.0001, n_iters=i)
 reg.fit(X_train, y_train)
-preds=reg.predict(X_test)
+pred=reg.predict(X_test)
 print(f"Accuracy for {i} iterations = {accuracy(y_test, preds)}")
 etime=time.time()
 t=etime-stime
 print(f"Time taken for {i} iterations is {t} seconds")
+print(confusion_matrix(y_test, pred))
 print("\n")
 # i*=10
 
@@ -128,5 +129,5 @@ Logistic Regression-Works
 KNN-Works
 Naive Bayes-Doesn't
 SVM-Works
-RFC-Works
+RFC-Works(enakku innum doubt dhaan maams)
 """
