@@ -5,11 +5,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import time
 from sklearn.metrics import confusion_matrix, precision_recall_curve
+from sklearn.metrics import accuracy_score, precision_score, recall_score
 from knn import KNN
 from logreg import LogisticRegression
 from nb import NaiveBayes
 from svm import SVM
 from random_forest import RandomForest
+from precision_recall_curve_generator import PrecisionRecallCurveGenerator
 
 csv=pd.read_csv(r"asd.csv")
 data=pd.DataFrame(csv)
@@ -73,6 +75,8 @@ t1=e1time-s1time
 print(f"Time taken for KNN is {t1} seconds")
 print(confusion_matrix(y_test, preds))
 print("\n")
+prc_gen1=PrecisionRecallCurveGenerator(preds)
+prc_gen1.generate_curve()
 
 s2time=time.time()
 clf=SVM(lr=0.001, _lambda=0.01, n_iters=1000)
@@ -84,6 +88,8 @@ t2=e2time-s2time
 print(f"Time taken for SVM is {t2} seconds")
 print(confusion_matrix(y_test, predictions))
 print("\n")
+prc_gen2=PrecisionRecallCurveGenerator(predictions)
+prc_gen2.generate_curve()
 
 
 s3time=time.time()
@@ -96,6 +102,8 @@ t3=e3time-s3time
 print(f"Time taken for RFC is {t3} seconds")
 print(confusion_matrix(y_test, y_pred1))
 print("\n")
+prc_gen3=PrecisionRecallCurveGenerator(y_pred1)
+prc_gen3.generate_curve()
 
 stime=time.time()
 nb=NaiveBayes()
@@ -107,6 +115,8 @@ t=etime-stime
 print(f"Time taken for Naive Bayes algorithm is {t} seconds")
 print(confusion_matrix(y_test, prediction))
 print("\n")
+prc_gen4=PrecisionRecallCurveGenerator(prediction)
+prc_gen4.generate_curve()
 
 i=10000000#start value 10000 
 # while(i<1000000000):
@@ -121,6 +131,8 @@ print(f"Time taken for {i} iterations is {t} seconds")
 print(confusion_matrix(y_test, pred))
 print("\n")
 # i*=10
+prc_gen5=PrecisionRecallCurveGenerator(pred)
+prc_gen5.generate_curve()
 
 
 
